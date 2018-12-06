@@ -45,7 +45,6 @@ Run each notebook following the correct order denoted in the filename.
 
 
 ## Citations
-- fastText pretrained models -
 @article{bojanowski2017enriching,
   title={Enriching Word Vectors with Subword Information},
   author={Bojanowski, Piotr and Grave, Edouard and Joulin, Armand and Mikolov, Tomas},
