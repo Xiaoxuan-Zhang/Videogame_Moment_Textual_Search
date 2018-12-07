@@ -33,14 +33,14 @@ In this folder, you will find the following notebooks along with some python fil
 
 Each notebook provides instructions about why-and-how. The other python files contain some classes and utility functions used in those notebooks.
 
-## 3. Prepare the data
+## 3. Prepare data
 Make each video and its corresponding caption file have the same name. It is necessary in the sampling process because the code will need this information to match videos with correct caption files. An example should be:
 * Episode_1.mp4 - video<br>
 * Episode_1.vtt - caption<br>
 * Episode_2.mp4 - video<br>
 * Episode_2.vtt - caption<br>
 
-## 4. Process the data
+## 4. Process data
 Run each notebook following the correct order denoted in the filename.
 
 
