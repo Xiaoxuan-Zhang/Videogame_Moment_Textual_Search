@@ -19,10 +19,10 @@ class Vectors:
     def load_word_vectors(self, mode='fasttext'):
         if self.embedding_dict is None:
             if mode.lower() == 'fasttext':
-                print("load fasttext vec")
+                print("loading fasttext vectors")
                 self.embedding_dict = fasttext.load_fasttext_format(self.vector_file).wv
             else:
-                print("load word2vec")
+                print("loading word2vec vectors ")
                 self.embedding_dict = KeyedVectors.load_word2vec_format(self.vector_file)
             ''' 
             Note that Fasttext bin file is not compatible with word2vec format as it contains extra 
