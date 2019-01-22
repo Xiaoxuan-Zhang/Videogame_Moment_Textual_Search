@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Moments</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="css/UI.css" type="text/css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<style>
+		</style>
+	</head>
+	<body>
+		<div id="loading-scene">
+			<div id="loader-wrapper">
+				<div id="loader"></div>
+			</div>
+			<div id="loader-info">
+				<p>Generating Moment Space...</p>
+			</div>
+		</div>
+		<div id="container"></div>
+		<div class="top-bar" id="top_bar" style="display:none">
+			<div class="corpora-btn-wrapper">
+				<button class="button" id="corpora-btn" onclick="onShowCorporaBar(this.id)">Corpora</button>
+			</div>
+			<div class="bookmark-btn-wrapper">
+				<button class="button" id="bookmark-btn" onclick="onShowBookmarkBar(this.id)">Bookmark</button>
+			</div>
+			<div class="animation-btn-wrapper">
+				<button class="button" id="animation-btn" onclick="onShowAnimationBar(this.id)">Animation</button>
+			</div>
+			<div class="search-container">
+				<div class="search-wrapper">
+					<input type="text" placeholder="Search By Id..." id="moment_id" name="search">
+					<button type="submit" class="search-btn" id="moment_button" onclick="onMomentInput()"><i class="fa fa-search"></i></button>
+				</div>
+			</div>
+			<!--div class="question-container">
+					<div style="position: absolute; height: 100%; vertical-align: middle;">
+						<i class="far fa-question-circle" id="question-helper"></i>
+					</div>
+			</div-->
+		</div>
+		<div id="corpora_bar" style="display:none"></div>
+		<div id="animation_bar" style="display:none">
+			<input type="text" placeholder="StartId" id="startId" name="input_start">
+			<input type="text" placeholder="StopId" id="stopId" name="input_stop">
+			<div id="player_controls">
+				<button type="submit" class="control-button" id="fastrwd-btn" onclick="onPlay(this.id)"><i class="material-icons" id="fastRwd">fast_rewind</i></button>
+				<button type="submit" class="control-button" id="playpause-btn" onclick="onPlay(this.id)"><i class="material-icons" id="playpause">play_circle_outline</i></button>
+				<!--button type="submit" class="control-button" id="pause-btn" onclick="onPlay(this.id)"><i class="material-icons" id="pause" style="display:none">pause_circle_outline</i></button-->
+				<button type="submit" class="control-button" id="fastfwd-btn" onclick="onPlay(this.id)"><i class="material-icons" id="fastFwd">fast_forward</i></button>
+				<button type="submit" class="control-button" id="replay-btn" onclick="onPlay(this.id)"><i class="material-icons" id="replay">replay</i></button>
+				<button type="submit" class="control-button" id="loop-btn" onclick="onPlay(this.id)"><i class="material-icons" id="loop">loop</i></button>
+			</div>
+		</div>
+		<div id="bottomright-bar" style="display:none;">
+			<p id="game-info"></p>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.3.1.js"
+		integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+		crossorigin="anonymous"></script>
+		<script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
+		<script src="js/lib/three.js"></script>
+		<script src="js/lib/tween.js"></script>
+		<script src="js/lib/OrbitControls.js"></script>
+		<script src="js/lib/Projector.js"></script>
+		<script src="js/Globals.js"></script>
+		<script src="js/shaders/skybox_vs.js"></script>
+		<script src="js/shaders/skybox_fs.js"></script>
+		<script src="js/objects/Skybox.js"></script>
+		<script src="js/Animation.js"></script>
+		<script src="js/AudioLoad.js"></script>
+		<script src="js/objects/MetalabelManager.js"></script>
+		<script src="js/objects/spriteManager.js"></script>
+		<script src="js/objects/CameraManager.js"></script>
+		<script src="js/objects/UrlManager.js"></script>
+		<script src="js/objects/BookmarkManager.js"></script>
+		<script src="js/EventHandler.js"></script>
+		<script src="js/uiHandler.js"></script>
+		<script src="js/EventQueue.js"></script>
+		<script src="js/Scene.js"></script>
+</body>
+
+</html>

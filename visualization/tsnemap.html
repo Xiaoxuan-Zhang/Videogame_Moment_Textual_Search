@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Moments</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="css/UI.css" type="text/css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<style>
+		</style>
+	</head>
+	<body>
+		<div id="loading-scene">
+			<div id="loader-wrapper">
+				<div id="loader"></div>
+			</div>
+			<div id="loader-info">
+				<p>Generating Moment Space...</p>
+			</div>
+		</div>
+		<div id="container"></div>
+		<div class="top-bar" id="top_bar" style="display:none">
+			<div class="top-btn-wrapper corpora-btn-wrapper">
+				<button class="button" id="corpora-btn"  title="Toggle on/off corpora" onclick="onShowCorporaBar(this.id)">Corpora</button>
+			</div>
+			<div class="top-btn-wrapper bookmark-btn-wrapper">
+				<button class="button" id="bookmark-btn" title="Show timelines and bookmarks" onclick="onShowBookmarkBar(this.id)">Timeline</button>
+			</div>
+			<div class="top-btn-wrapper animation-btn-wrapper">
+				<button class="button" id="animation-btn" title="Show animations" onclick="onShowAnimationBar(this.id)">Animation</button>
+			</div>
+			<div class="top-btn-wrapper search-container">
+				<div class="search-wrapper">
+					<input type="text" title="Input global ID to search for a specific moment" placeholder="Search By ID..." id="moment_id" name="search">
+					<button type="submit" class="search-btn" id="moment_button" onclick="onSearchInput()"><i class="fa fa-search"></i></button>
+				</div>
+			</div>
+			<div class="top-btn-wrapper help-button-wrapper">
+				<button class="button-no-border" id="help-btn" title="Help" onclick="onShowHelp()"><i class="my-icons material-icons" style="vertical-align: middle;" id="help-button">help</i></button>
+			</div>
+			<div class="top-btn-wrapper exit-button-wrapper">
+				<button class="button-no-border" id="exit-btn" title="Go back to the main page" onclick="onNavigateToIndex()"><i class="my-icons material-icons" style="vertical-align: middle;" id="power-button">power_settings_new</i></button>
+			</div>
+			<div class="top-btn-wrapper mute-button-wrapper">
+				<button class="button-no-border" id="mute-btn" title="Mute/Unmute" onclick="onUnmute()"><i class="my-icons material-icons" style="vertical-align: middle;" id="mute-button">volume_off</i></button>
+			</div>
+			<div class="top-btn-wrapper share-button-wrapper">
+				<button class="button-no-border" id="share-btn" title="Share" onclick="onShare()"><i class="my-icons material-icons" style="vertical-align: middle;" id="share-button">share</i></button>
+			</div>
+		</div>
+		<div class="vertical-bar" id="corpora_bar" style="display:none"></div>
+		<div id="video-div" class="dialog-wrapper half-page-dialog" style="display:none">
+			<div id="drag-icon-wrapper">
+				<i title="This is a draggable window." class="material-icons" id="video-drag-icon">drag_indicator</i>
+				<span id="moment-index-paused"></span>
+			</div>
+			<div id="video-box" class="video-box">
+				<video id="moment-video" class="video_embeded">
+					<source id="moment-video-src" type="video/mp4" src=""></source>
+					<p>Sorry, your browser does not support the &lt;video&gt; element.</p>
+				</video>
+			</div>
+			<div id="animation_bar">
+				<input type="text" title="Set start point with global ID" placeholder="StartId" id="video_startId" name="input_start">
+				<input type="text" title="Set stop point with global ID" placeholder="StopId" id="video_stopId" name="input_stop">
+				<div id="player_controls">
+					<button type="submit" title="jump back to the last moment" class="control-button" id="fastrwd-btn" onclick="onPlay(this.id)"><i class="material-icons" id="fastRwd">skip_previous</i></button><!--fast_rewind-->
+					<button type="submit" title="play|pause the video" class="control-button" id="playpause-btn" onclick="onPlay(this.id)"><i class="material-icons" id="playpause">play_circle_outline</i></button>
+					<!--button type="submit" class="control-button" id="pause-btn" onclick="onPlay(this.id)"><i class="material-icons" id="pause" style="display:none">pause_circle_outline</i></button-->
+					<button type="submit" title="jump to the next moment" class="control-button" id="fastfwd-btn" onclick="onPlay(this.id)"><i class="material-icons" id="fastFwd">skip_next</i></button> <!--fast_forward-->
+					<button type="submit" title="replay from startId" class="control-button" id="replay-btn" onclick="onPlay(this.id)"><i class="material-icons" id="replay">replay</i></button>
+					<button type="submit" title="reset startId|stopId" class="control-button" id="loop-reset-btn" onclick="onPlay(this.id)"><i class="material-icons" id="loop">clear</i></button>
+				</div>
+			</div>
+		</div>
+		<div id="bottomright-bar" style="display:none;">
+			<p id="game-info"></p>
+		</div>
+		<div id="bookmarkInputDiv" style="display:none">
+			<div class="dialog-wrapper bottom-dialog">
+				Please enter comment for the bookmark (optional):<br />
+				<input type="text" class="roundInput" id="bookmarkComment"><br/>
+				<table class="dialog-button-table"><tr><td>
+				<button id="bookmark-commit" class="dialog-button" onclick="bookmarkDialog.dialogReturned()">Bookmark</button>
+				</td><td>
+				<button class="dialog-button" onclick="bookmarkDialog.dialogCancelled()">Cancel</button>
+				</td></tr></table>
+			</div>
+		</div>
+		<div id="shareDialogDiv" style="display:none">
+			<div class="dialog-wrapper small-page-dialog">
+				<textarea id="link-text" value="text"></textarea>
+				<div class="share-btn-wrapper">
+					<button class="dialog-button share-copy-button" id="share-copy-button" onclick="shareDialog.copy()">Copy</button>
+					<button class="dialog-button share-close-button" id="share-close-button" onclick="shareDialog.dialogCancelled()">Close</button>
+				</div>
+			</div>
+		</div>
+		<div id="helpDialogDiv" style="display:none">
+			<div class="dialog-wrapper full-page-dialog">
+				<div class="full-page-div" style="overflow-y: scroll;">
+					<table class="dialog-button-table dialog-wide-table">
+						<tr style="height:90%; text-align: left;">
+							<td>
+								<h3>Navigation</h3>
+								<ul>
+									<li>Mouse scroll to zoom in or zoom out</li>
+									<li>Mouse drag to rotate</li>
+									<li>Press key w, s to move forward or backward</li>
+									<li>Press key a, d to move the camera to the left or right</li>
+									<li>Press key r, f to look up and down</li>
+								</ul>
+								<h3>Controls</h3>
+								<ul>
+									<li>Mouse click to select a moment, once selected:</li>
+										<ul>
+											<li>Press key , and . to jump to the previous or next moment</li>
+											<li>Press Key b to bookmark the current moment</li>
+										</ul>
+									<li>Press key - and = to jump to the previous or next bookmark</li>
+									<li>Use global ID to search for a specific moment</li>
+								</ul>
+								<h3>Menu</h3>
+								<ul>
+									<li>Corpora allows you to toggle on and off specific corpus rendered in the scene</li>
+									<li>Timeline shows your saved bookmarks on their respective timelines corresponding to the corpora</li>
+									<li>Animation puts all the screenshots in a single video clip</li>
+										<ul>
+											<li>Animation window is draggable</li>
+											<li>Use StartId, StopId to set the start and end frame of the video using moment global Id</li>
+											<li>When the video is paused, you can use |< and |> to jump to the last and the next moment</li>
+											<li>Use rewind button to start over the video</li>
+											<li>Use X button to reset</li>
+										</ul>
+								</ul>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="helper-btn-wrapper">
+					<button class="dialog-button" onclick="helpDialog.dialogCancelled()">Close</button>
+				</div>
+			</div>
+		</div>
+		<div class="metalabel-wrapper" id="ml-menu-wrapper" style="visibility:hidden;">
+			<div class="ml-content-wrapper ml-dir-prv-wrapper">
+				<button class="button-no-border" id="ml-prv-btn" title="Go to previous moment" onclick="onPreviousBtnClicked()"><i class="material-icons large-icon" style="vertical-align: middle;">arrow_left</i></button>
+			</div>
+			<div class="ml-content-wrapper ml-dropdown-btn-wrapper">
+				<button class="button-no-border" id="ml-dropdown-btn" title="Add to timeline" onclick="onShowLabelDropdown()">Global Id: 3300<!--i class="material-icons mid-icon" style="vertical-align: middle;">arrow_drop_down</i--></button>
+				<div class="ml-dropdown-wrapper" id="ml-dropdown-list">
+					<p title="Add/Update to bookmarks" onclick="onAddBookmark()">Add/Update</p>
+					<p title="Remove from bookmarks" onclick="onRemoveBookmark()">Remove</p>
+				</div>
+			</div>
+			<div class="ml-content-wrapper ml-dir-next-wrapper">
+				<button class="button-no-border" id="ml-next-btn" title="Go to next moment" onclick="onNextBtnClicked()"><i class="material-icons large-icon" style="vertical-align: middle;">arrow_right</i></button>
+			</div>
+		</div>
+		<div class = "timeline-wrapper" id="timeline-wrapper" style="visibility: hidden;"></div>
+		<script src="https://code.jquery.com/jquery-3.3.1.js"
+		integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+		crossorigin="anonymous"></script>
+		<script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
+		<script src="js/lib/d3.v2.min.js"></script>
+		<script src="js/lib/timeknots.js"></script>
+		<script src="js/lib/three.js"></script>
+		<script src="js/lib/tween.js"></script>
+		<script src="js/lib/OrbitControls.js"></script>
+		<script src="js/lib/Projector.js"></script>
+		<script src="js/Globals.js"></script>
+		<script src="js/shaders/skybox_vs.js"></script>
+		<script src="js/shaders/skybox_fs.js"></script>
+		<script src="js/objects/Skybox.js"></script>
+		<script src="js/Animation.js"></script>
+		<script src="js/AudioLoad.js"></script>
+		<script src="js/objects/DataManager.js"></script>
+		<script src="js/objects/MetalabelManager.js"></script>
+		<script src="js/objects/spriteManager.js"></script>
+		<script src="js/objects/CameraManager.js"></script>
+		<script src="js/objects/CameraControls.js"></script>
+		<script src="js/objects/UrlManager.js"></script>
+		<script src="js/objects/Timelines.js"></script>
+		<script src="js/objects/BookmarkManager.js"></script>
+		<script src="js/objects/Dialogs.js"></script>
+		<script src="js/objects/VideoManager.js"></script>
+		<script src="js/EventHandler.js"></script>
+		<script src="js/uiHandler.js"></script>
+		<script src="js/EventQueue.js"></script>
+		<script src="js/Scene.js"></script>
+</body>
+
+</html>
