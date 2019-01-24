@@ -32,8 +32,9 @@ class Server:
 
     def load_embeddings(self):
         if len(self.database.items()) > 0:
-            out_folder = os.path.dirname(os.path.dirname(self.database['0']['screenshots']['image_folder']))
-            emb_files = glob.glob(os.path.join(out_folder, '*/embeddings_ma5/*.npy'))
+            img_folder = self.database['0']['screenshots']['image_folder'].replace('\\', '/')
+            out_folder = os.path.dirname(os.path.dirname(img_folder))
+            emb_files = glob.glob(os.path.join(out_folder, '*/embeddings/*.npy'))
             print(emb_files)
             arr_ls = []
             for file in emb_files:
@@ -52,8 +53,11 @@ class Server:
             frame_id = self.embedding_dict[nb_id_str][2]
             img_sessions = self.database[file_id]['screenshots']['image_info']
             moment_id = img_sessions[session_id]['frames'][frame_id]['moment_id']
+            img_keywords = img_sessions[session_id]['frames'][frame_id]['image_keywords']
+            captions = self.database[file_id]['captions']['captions'][session_id]['text']
             results.append(
-                {'file_id': file_id, 'session_id': session_id, 'frame_id': frame_id, 'moment_id': moment_id})
+                {'file_id': file_id, 'session_id': session_id, 'frame_id': frame_id, 'moment_id': moment_id, 'img_keywords': img_keywords, 'captions': captions})
+
         return results
 
 server = Server('./visualization/backend/fasttext/wiki.en.bin')
