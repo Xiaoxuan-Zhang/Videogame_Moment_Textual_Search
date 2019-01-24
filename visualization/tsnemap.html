@@ -8,18 +8,31 @@
 		<link rel="stylesheet" href="css/UI.css" type="text/css">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<style>
 		</style>
 	</head>
 	<body>
-		<div id="loading-scene">
+		<!--div id="loading-scene">
 			<div id="loader-wrapper">
 				<div id="loader"></div>
 			</div>
 			<div id="loader-info">
 				<p>Generating Moment Space...</p>
 			</div>
-		</div>
+		</div-->
+		<div id = "loading-scene" class="loading-page container-fluid">
+	    <div class="description">
+	      <h2>Navigating video game moments in 2D/3D space</h2>
+				<p class="description-text"> This is an interactive visualization created with Three.js. To learn more about this project, check out
+	        <a href="https://zooeytheengineer.wordpress.com/">this blog</a>.
+	      </p>
+	    </div>
+	    <div class="text-center">
+	      <p class="loading-text">Generating moment space...</p>
+	      <div class="spinner"></div>
+	    </div>
+  	</div>
 		<div id="container"></div>
 		<div class="top-bar" id="top_bar" style="display:none">
 			<div class="top-btn-wrapper corpora-btn-wrapper">
