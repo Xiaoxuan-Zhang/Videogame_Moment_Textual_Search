@@ -151,4 +151,33 @@ function CameraManager() {
       this.makeInvisible(this.visibleLabels[key]);
     }
   }
+  this.flyToPosition = function(targetPosition, isAnimated = true){
+    if (targetPosition == null || targetPosition == undefined)
+    {
+      return;
+    }
+    var flyTo = null;
+    var flyFrom = null;
+    flyTo = targetPosition;
+    flyFrom = camera.position;
+    g_isFlying = true;
+    lookAtOrg = new THREE.Vector3(0.0);
+    lookAtDest = targetPosition;
+    duration = FLYING_DURATION;
+
+    var tween_forward = new TWEEN.Tween(flyFrom)
+      .to(flyTo, duration)
+      .easing(TWEEN.Easing.Quintic.InOut)
+      .onUpdate(function () {
+        g_isFlying = true;
+        camera.position.set(this.x, this.y, this.z);
+        //IMPORTANT!
+        camera.lookAt(new THREE.Vector3(targetPosition.x, targetPosition.y, targetPosition.z + FLY_STOP_DISTANCE));
+      })
+      .onComplete(function () {
+        g_isFlying = false;
+        controls.target = new THREE.Vector3(0.0);
+      });
+      tween_forward.start();
+  }
 }

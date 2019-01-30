@@ -9,7 +9,8 @@ input.addEventListener("keyup", function(event) {
   // Number 13 is the "Enter" key on the keyboard
   if (event.keyCode === 13) {
     // Trigger the button element with a click
-    document.getElementById("moment_button").click();
+    //document.getElementById("moment_button").click();
+    $( "#moment_button" ).trigger( "click" );
   }
 });
 
@@ -124,6 +125,35 @@ function resetBookmakrs() {
 
   }
 }
+function onNextBtnClicked(){
+  // should check if selected item is part of some object
+  if (g_lastSelected.object == null || (g_currentTarget >= Object.keys(spriteManager.spriteDictionary).length - 1)){
+    return;
+  }
+  g_autoRotate = false;
+  ////////////////////////////////////////////////////////////Chris's Code
+  audioManager.playSound(audioManager.soundOnNext); //sound for next page
+	//////////////////////////////////////////////////////////////////////
+  g_currentTarget += 1;
+  labelManager.showNearbyLabels(g_currentTarget, 5, false);
+  urlManager.updateURL(URLKeys.MOMENT, g_currentTarget);
+  g_lastSelected.object = spriteManager.spriteDictionary[g_currentTarget].object;
+  $("#ml-dropdown-btn").text("Global ID: " + g_currentTarget);
+}
+function onPreviousBtnClicked() {
+  if (g_lastSelected.object== null || (g_currentTarget == 0)){
+    return;
+  }
+  g_autoRotate = false;
+  ////////////////////////////////////////////////////////////Chris's Code
+  audioManager.playSound(audioManager.soundOnNext); //sound for next page
+  ////////////////////////////////////////////////////////////Chris's Code
+  g_currentTarget -= 1;
+  labelManager.showNearbyLabels(g_currentTarget, 5, false);
+  urlManager.updateURL(URLKeys.MOMENT, g_currentTarget);
+  g_lastSelected.object = spriteManager.spriteDictionary[g_currentTarget].object;
+  $("#ml-dropdown-btn").text("Global ID: " + g_currentTarget);
+}
 
 function onKeydown(event){
   if (g_dialogVisible) { return; }
@@ -163,7 +193,6 @@ function onKeyup(event){
 }
 
 function onPageLoad(object) {
-	var url = 'http://localhost:5000/game';
   var game = "";
   // sanity check
   if (Array.isArray(object))
@@ -172,40 +201,15 @@ function onPageLoad(object) {
   } else {
     game = object;
   }
-	var input_data = {
-		text: game
-	};
-	$.ajax({
-		url: url,
-		type: "POST",
-		data: input_data,
-		success: function(result){
-		  console.log(result);
-		},
-		error: function(error) {
-		  console.log(error);
-		}
-	})
+  server.loadGame(game);
 }
-function onTextInput(input) {
-  var url = 'http://localhost:5000/data';
-  var input_data = {
-    text: input
-  };
 
-  $.ajax({
-    url: url,
-    type: "GET",
-    data: input_data,
-    success: function(result){
-      console.log(result);
-    },
-    error: function(error) {
-      console.log(error);
-    }
-  })
+function onTextInput(input) {
+  server.textualSearch(input);
 }
 function onSearchInput(event) {
+  cameraControls.enabled = true;
+
   if (g_dialogVisible) { return; }
   var inputMomentId = document.getElementById("moment_id");
   inputMomentId.blur();
@@ -233,7 +237,7 @@ function onMomentInput(input) {
 //Save a new bookmark
 function onBookmarking(event) {
   if (g_dialogVisible) { return; }
-
+  if ($('#moment_id').is( ":focus" )) {return;}
   if (g_lastSelected.object != null && (event.key == 'b' || event.key == 'B')){
     // // display dialog
     // g_dialogVisible = true;
@@ -279,4 +283,21 @@ function myKeyUp (event){
 
 function resizeTimeline(){
   bookmarkManager.timeLine.resizeTimeline();
+}
+
+function onClickMomentResults(event) {
+  var img_id =  $(this).attr("id");
+  var corpus = "";
+  var moment_id = "";
+  if (img_id != undefined) {
+    var arr = img_id.split("#");
+    corpus = arr[0];
+    moment_id = arr[1];
+    var global_id = spriteManager.spriteGroups[corpus].children[moment_id].name;
+    onMomentInput(global_id);
+  }
+}
+
+function onTextInputFocused() {
+  cameraControls.enabled = false;
 }

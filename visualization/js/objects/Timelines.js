@@ -1,11 +1,14 @@
 function Timeline() {
   this.timelineData = {};
-  this.timeline_width = $( '.timeline-wrapper' ).width()* 0.9;
-  this.height = 30;
+  this.height = 5;
   this.createTimeline = function(){
     //Tricky calculation for svg height
     var corpusNum = Object.keys(spriteManager.spriteGroups).length;
-    this.height = $( '.timeline-wrapper' ).height()/corpusNum;
+    this.timeline_width = $( '.timeline-wrapper' ).width() * 0.8; //must be the same as width defined in .timeline UI.css
+    let h = $(window).height() * 0.05;
+    $('.timeline-wrapper').height(h * corpusNum);
+
+    this.height = $( '.timeline-wrapper' ).height() / corpusNum;
     for (corpus in spriteManager.spriteGroups) {
       if (!this.timelineData.hasOwnProperty(corpus)){
         var id = "#timeline-" + corpus;
@@ -67,7 +70,7 @@ function Timeline() {
   {
     var corpusNum = Object.keys(spriteManager.spriteGroups).length;
     this.height = $( '.timeline-wrapper' ).height()/corpusNum;
-    this.timeline_width = $( '.timeline-wrapper' ).width() * 0.9;
+    this.timeline_width = $( '.timeline-wrapper' ).width() * 0.8;
     for (tm in this.timelineData) {
       var id = "#timeline-" + tm;
       var elem = $(id);

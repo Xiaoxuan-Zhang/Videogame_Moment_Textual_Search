@@ -135,4 +135,7 @@ function SpriteManager() {
       this.spriteGroups[corpus].children[i].material.opacity = opacity;
     }
   }
+  this.getGlobalId = function(corpus, moment_id) {
+    return this.spriteGroups[corpus].children[moment_id].name;
+  }
 }

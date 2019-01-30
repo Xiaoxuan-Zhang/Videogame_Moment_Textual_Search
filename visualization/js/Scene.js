@@ -11,7 +11,6 @@ var g_actionCounter = 0;
 var g_expectedActions = 0;
 var g_autoRotate = true;
 var g_dialogVisible = false;
-var g_game = null;
 ////////////////////Objects/////////////////////////////////////////////////////
 var animator = null;
 var bookmarkManager = new BookmarkManager();
@@ -28,6 +27,7 @@ var shareDialog = new ShareDialog();
 var videoManager = new VideoManager();
 var dataManager = new DataManager();
 var cameraControls = new CameraControls();
+var server = new Server();
 ///////////////////Chris's variables////////////////////////////////////////////
 var moveFoward = false;
 var moveBackward = false;
@@ -73,7 +73,7 @@ function initScene() {
   camera = new THREE.PerspectiveCamera( 75, WIDTH / HEIGHT, 0.1, SPACE_SCALE*2.0);
   camera.position.x = 0.0;
   camera.position.y = 0.0;
-  camera.position.z = SPACE_SCALE * - 0.1  ;
+  camera.position.z = SPACE_SCALE * - 0.8;// SPACE_SCALE * - 0.2  ;
 
   if (urlParams.dimension == "2"){
     camera.position.y = 30.0;
@@ -140,6 +140,7 @@ function loadingScene() {
   {
     addCorporaButtons();
     addTimelineDivs();
+    presetTextbox();
     //createTimeline();
     bookmarkManager.init();
     if (dataManager.jsonData.video != undefined)
@@ -174,4 +175,7 @@ function cameraReady() {
       bookmarkManager.addBookmark(key, bmjson[key]);
     }
   }
+
+  let initPosition = new THREE.Vector3(0.0, 0.0, SPACE_SCALE * - 0.2);
+  cameraManager.flyToPosition(initPosition);
 }

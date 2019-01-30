@@ -53,10 +53,20 @@ var TimeKnots = {
       var maxValue = d3.max(timestamps);
       var minValue = d3.min(timestamps);
     }
-    var margin = (d3.max(events.map(function(d){return d.radius})) || cfg.radius)*1.5+cfg.lineWidth;
+    var margin = (d3.max(events.map(function(d){return d.radius})) || cfg.radius)*1.2+cfg.lineWidth;
     var step = (cfg.horizontalLayout)?((cfg.width-2*margin)/(maxValue - minValue)):((cfg.height-2*margin)/(maxValue - minValue));
     var series = [];
-    if(maxValue == minValue){step = 0;if(cfg.horizontalLayout){margin=cfg.width/2}else{margin=cfg.height/2}}
+    if(maxValue == minValue)
+    {
+      step = 0;
+      if(cfg.horizontalLayout)
+      {
+        margin=cfg.width/2
+      }else
+      {
+        margin=cfg.height/2
+      }
+    }
 
     linePrevious = {
       x1 : null,
@@ -211,14 +221,19 @@ var TimeKnots = {
         var endString = maxValue;
       }
       svg.append("text")
-         .text(startString).style("font-size", "70%")
+         .text(startString).style("font-size", "40%").style("color", "#5c5c8a").style("font-family", "Helvetica")
          .attr("x", function(d){if(cfg.horizontalLayout){return d3.max([0, (margin-this.getBBox().width)])} return Math.floor(this.getBBox().width)})
-         .attr("y", function(d){if(cfg.horizontalLayout){return Math.floor(cfg.height/2+(margin+this.getBBox().height))}return margin+this.getBBox().height/2});
+         .attr("y", function(d){
+           if(cfg.horizontalLayout){
+             return Math.floor(cfg.height/2+(margin*0.5+this.getBBox().height))
+           }
+           return margin+this.getBBox().height/2;
+         });
 
       svg.append("text")
-         .text(endString).style("font-size", "70%")
+         .text(endString).style("font-size", "40%").style("color", "#5c5c8a").style("font-family", "Helvetica")
          .attr("x", function(d){if(cfg.horizontalLayout){return  cfg.width -  d3.max([this.getBBox().width, (margin+this.getBBox().width)])} return Math.floor(this.getBBox().width)})
-         .attr("y", function(d){if(cfg.horizontalLayout){return Math.floor(cfg.height/2+(margin+this.getBBox().height))}return cfg.height-margin+this.getBBox().height/2})
+         .attr("y", function(d){if(cfg.horizontalLayout){return Math.floor(cfg.height/2+(margin*0.5+this.getBBox().height))}return cfg.height-margin+this.getBBox().height/2})
     }
     svg.on("mousemove", function(){
         tipPixels = parseInt(tip.style("height").replace("px", ""));

@@ -11,6 +11,7 @@ function CameraControls() {
   this.rotationVector = new THREE.Vector3( 0, 0, 0 );
   this.tmpQuaternion = new THREE.Quaternion();
   this.clock = new THREE.Clock();//variables for turning direction and moving speed
+  this.enabled = true;
 }
 Object.assign( CameraControls.prototype, {
   init: function() {
@@ -63,6 +64,7 @@ Object.assign( CameraControls.prototype, {
 	  this.rotationVector.y = ( - this.turnRight + this.turnLeft );
   },
   onKeydown: function(event) {
+    if (!this.enabled) {return;}
     switch(event.keyCode){
   		case 87:
   			this.moveFoward = true;
@@ -86,6 +88,7 @@ Object.assign( CameraControls.prototype, {
   	this.updateRotation();
   },
   onKeyup: function(event) {
+    if (!this.enabled) {return;}
     switch(event.keyCode){
   		case 87:
   			this.moveFoward = false;

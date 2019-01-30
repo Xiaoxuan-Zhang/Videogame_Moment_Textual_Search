@@ -1,9 +1,21 @@
+
+$(document).ready(function(){
+  $('#nav-icon3').click(function(){
+    $(this).toggleClass('open');
+    $("#moment_slider").slideToggle("fast");
+  });
+});
+
 function showPage() {
-  $("#loading-scene").fadeOut(1000);
-  document.getElementById("container").style.display = "block";
-  //document.getElementById("float_div").style.display = "block";
-  document.getElementById("top_bar").style.display = "block";
-  document.getElementById("bottomright-bar").style.display = "block";
+  $("#loading-scene").fadeOut(500);
+  $('#container').show("fast");
+  $('#top_bar').show("fast");
+  $('#bottomright-bar').show("fast");
+  $('#sidebar-btn-wrapper').show("fast");
+  if (!videoManager.loaded)
+  {
+    $('#animation-btn-container').hide("fast");
+  }
 }
 
 function addGameInfo(game) {
@@ -16,13 +28,13 @@ function addCorporaButtons(){
     var wrapper = id + "-wrapper";
     $('#corpora_bar').prepend("<div id='" + wrapper + "'></div>");
     $('#' + wrapper).prepend("<button class='button-sm button-sm-clicked' id='" + id + "' onclick='onShowCorpus(this.id)'>" + corpus + "</button>");
-    height = 5;
+    height = 8;
     gap = 5;
     pct = gap + (gap+height)*idx;
     $('#' + wrapper).css("position", "absolute");
     $('#' + wrapper).css("top", pct+"%");
-    $('#' + wrapper).css("left", "15%");
-    $('#' + wrapper).css("width", "70%");
+    $('#' + wrapper).css("left", "1%");
+    $('#' + wrapper).css("width", "98%");
     $('#' + wrapper).css("height", height+"%");
     $('#' + id).css("position", "absolute");
     $('#' + id).css("height", "100%");
@@ -202,19 +214,20 @@ function addTimelineDivs(){
   for (corpus in spriteManager.spriteGroups){
     var pct = idx * div_height_pct;
     var id = "timeline-" + corpus;
-    var text_id = id + "-textbox";
-    $('#timeline-wrapper').prepend("<div id='" + text_id + "', class='" + text_class + "'>" + corpus + "</div>");
-    $('#' + text_id).css("position", "relative");
-    //$('#' + text_id).css("bottom", pct+"%");
-    $('#' + text_id).css("height", div_height_pct+"%");
-    $('#' + text_id).css("order", order);
-    order ++;
 
     $('#timeline-wrapper').prepend("<div id='" + id + "', class='" + css_class + "'></div>");
     $('#' + id).css("position", "relative");
     //$('#' + id).css("bottom", pct+"%");
     $('#' + id).css("height", div_height_pct+"%");
     $('#' + id).css("order", order);
+    order ++;
+
+    var text_id = id + "-textbox";
+    $('#timeline-wrapper').prepend("<div id='" + text_id + "', class='" + text_class + "'>" + corpus + "</div>");
+    $('#' + text_id).css("position", "relative");
+    //$('#' + text_id).css("bottom", pct+"%");
+    $('#' + text_id).css("height", div_height_pct+"%");
+    $('#' + text_id).css("order", order);
     order ++;
 
     idx++ ;
@@ -267,39 +280,54 @@ function onRemoveBookmark() {
   var objNameVal = Number(g_lastSelected.object.name);
   bookmarkManager.removeBookmark(objNameVal);
 }
-function onNextBtnClicked(){
-  // should check if selected item is part of some object
-  if (g_lastSelected.object == null || (g_currentTarget >= Object.keys(spriteManager.spriteDictionary).length - 1)){
-    return;
-  }
-  g_autoRotate = false;
-  ////////////////////////////////////////////////////////////Chris's Code
-  audioManager.playSound(audioManager.soundOnNext); //sound for next page
-	//////////////////////////////////////////////////////////////////////
-  g_currentTarget += 1;
-  labelManager.showNearbyLabels(g_currentTarget, 5, false);
-  urlManager.updateURL(URLKeys.MOMENT, g_currentTarget);
-  g_lastSelected.object = spriteManager.spriteDictionary[g_currentTarget].object;
-  $("#ml-dropdown-btn").text("Global ID: " + g_currentTarget);
-}
-function onPreviousBtnClicked() {
-  if (g_lastSelected.object== null || (g_currentTarget == 0)){
-    return;
-  }
-  g_autoRotate = false;
-  ////////////////////////////////////////////////////////////Chris's Code
-  audioManager.playSound(audioManager.soundOnNext); //sound for next page
-  ////////////////////////////////////////////////////////////Chris's Code
-  g_currentTarget -= 1;
-  labelManager.showNearbyLabels(g_currentTarget, 5, false);
-  urlManager.updateURL(URLKeys.MOMENT, g_currentTarget);
-  g_lastSelected.object = spriteManager.spriteDictionary[g_currentTarget].object;
-  $("#ml-dropdown-btn").text("Global ID: " + g_currentTarget);
-}
+
 function onShowLabelDropdown() {
   if ($("#ml-dropdown-list").css("display") == "none") {
     $("#ml-dropdown-list").css("display","block");
   } else {
     $("#ml-dropdown-list").css("display","none");
   }
+}
+
+function showMomentSlider(object) {
+  $("#result-list ul").empty();
+  for (var idx = 0; idx < object.length; idx++) {
+    let corpus = object[idx]["corpus"];
+    let moment_id = object[idx]["moment_id"];
+    let keywords = object[idx]["img_keywords"];
+    let caption = object[idx]["captions"];
+    var global_id = spriteManager.spriteGroups[corpus].children[moment_id].name;
+    let img_src = spriteManager.spriteDictionary[global_id].image;
+    //'<h2 class="my-header2">' + "#" + moment_id + ' in ' + corpus + '</h2>' +
+    let str_content = '<img src="' + img_src + '" id="' + corpus + '#' + moment_id + '">' +
+    '<p class="my-p-style">' + '<b>Corpus: </b>' + corpus + '<br><b>Moment: </b>' + moment_id + '<br><b>Keywords:</b> ' + keywords + '<br><b>Captions:</b> ' + caption + '</p>';
+
+    $('#result-list ul').append(
+      $('<li>').attr("class", "my-list-style").append(str_content));
+  }
+  $("#moment_slider").scrollTop(0);
+
+  if ($( "#nav-icon3" ).attr("class") != "open")
+  {
+    $( "#nav-icon3" ).trigger( "click" );
+  }
+  $('.my-list-style img').on("click", onClickMomentResults);
+}
+
+function presetTextbox() {
+  let inquiries = [];
+  let game = dataManager.jsonData['game'];
+  if (game == "The Last Of Us") {
+    inquiries = ["horses", "animals", "weapons", "bow and arrow", "in the cars", "buildings", "windows and doors", "mountains and rivers", "fireflies", "clickers"];
+  } else if (game == "Life Is Strange 1") {
+    inquiries = ["butterfly bucket", "sunset at the beach", "storm tornado cliff", "storm lightening", "rewind", "mobilephones", "beacon", "camera", "Whales", "campus"];
+  }
+
+  var list = document.getElementById('preset_inquiries');
+
+  inquiries.forEach(function(item){
+     var option = document.createElement('option');
+     option.value = item;
+     list.appendChild(option);
+  });
 }

@@ -34,7 +34,7 @@ class Server:
         if len(self.database.items()) > 0:
             img_folder = self.database['0']['screenshots']['image_folder'].replace('\\', '/')
             out_folder = os.path.dirname(os.path.dirname(img_folder))
-            emb_files = glob.glob(os.path.join(out_folder, '*/embeddings/*.npy'))
+            emb_files = sorted(glob.glob(os.path.join(out_folder, '*/embeddings_ma5/*.npy')))
             print(emb_files)
             arr_ls = []
             for file in emb_files:
@@ -51,12 +51,13 @@ class Server:
             file_id = self.embedding_dict[nb_id_str][0]
             session_id = self.embedding_dict[nb_id_str][1]
             frame_id = self.embedding_dict[nb_id_str][2]
+            corpus = self.database[file_id]['corpus']
             img_sessions = self.database[file_id]['screenshots']['image_info']
             moment_id = img_sessions[session_id]['frames'][frame_id]['moment_id']
             img_keywords = img_sessions[session_id]['frames'][frame_id]['image_keywords']
             captions = self.database[file_id]['captions']['captions'][session_id]['text']
             results.append(
-                {'file_id': file_id, 'session_id': session_id, 'frame_id': frame_id, 'moment_id': moment_id, 'img_keywords': img_keywords, 'captions': captions})
+                {'file_id': file_id, 'corpus': corpus, 'session_id': session_id, 'frame_id': frame_id, 'moment_id': moment_id, 'img_keywords': img_keywords, 'captions': captions})
 
         return results
 
@@ -86,7 +87,10 @@ def set_game():
 @app.route('/data', methods=['GET'])
 def user_input():
     text = request.args.get('text')
-    results = server.retrieve(text)
+    json_obj = json.loads(text)
+    text_input = json_obj['text']
+    rank = json_obj['top_n']
+    results = server.retrieve(text_input, top_n = rank)
     return json.dumps(results)
 
 

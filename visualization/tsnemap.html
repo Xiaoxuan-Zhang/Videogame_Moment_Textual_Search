@@ -5,32 +5,27 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-		<link rel="stylesheet" href="css/UI.css" type="text/css">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/UI.css" type="text/css">
 		<style>
 		</style>
 	</head>
 	<body>
-		<!--div id="loading-scene">
-			<div id="loader-wrapper">
-				<div id="loader"></div>
-			</div>
-			<div id="loader-info">
-				<p>Generating Moment Space...</p>
-			</div>
-		</div-->
+		<div class="loader-wrapper" id="loader-ajax" style="display:none">
+			<div id="loader"></div>
+		</div>
 		<div id = "loading-scene" class="loading-page container-fluid">
 	    <div class="description">
 	      <h2>Navigating video game moments in 2D/3D space</h2>
-				<p class="description-text"> This is an interactive visualization created with Three.js. To learn more about this project, check out
+				<p class="description-text"> Videogame Moment Space is an interactive visualization created with Three.js. To learn more about this project, check out
 	        <a href="https://zooeytheengineer.wordpress.com/">this blog</a>.
 	      </p>
 	    </div>
 	    <div class="text-center">
+				<div class="spinner"></div>
 	      <p class="loading-text">Generating moment space...</p>
-	      <div class="spinner"></div>
 	    </div>
   	</div>
 		<div id="container"></div>
@@ -41,15 +36,16 @@
 			<div class="top-btn-wrapper bookmark-btn-wrapper">
 				<button class="button" id="bookmark-btn" title="Show timelines and bookmarks" onclick="onShowBookmarkBar(this.id)">Timeline</button>
 			</div>
-			<div class="top-btn-wrapper animation-btn-wrapper">
+			<div class="top-btn-wrapper animation-btn-wrapper" id="animation-btn-container">
 				<button class="button" id="animation-btn" title="Show animations" onclick="onShowAnimationBar(this.id)">Animation</button>
 			</div>
 			<div class="top-btn-wrapper search-container">
 				<div class="search-wrapper">
-					<input type="text" title="Input global ID to search for a specific moment" placeholder="Search By ID..." id="moment_id" name="search">
+					<input type="text" title="Input global ID to search for a specific moment" placeholder="Search by global id or text..." list="preset_inquiries" id="moment_id" name="search" onfocus="onTextInputFocused()">
 					<button type="submit" class="search-btn" id="moment_button" onclick="onSearchInput()"><i class="fa fa-search"></i></button>
 				</div>
 			</div>
+			<datalist id="preset_inquiries"></datalist>
 			<div class="top-btn-wrapper help-button-wrapper">
 				<button class="button-no-border" id="help-btn" title="Help" onclick="onShowHelp()"><i class="my-icons material-icons" style="vertical-align: middle;" id="help-button">help</i></button>
 			</div>
@@ -63,7 +59,25 @@
 				<button class="button-no-border" id="share-btn" title="Share" onclick="onShare()"><i class="my-icons material-icons" style="vertical-align: middle;" id="share-button">share</i></button>
 			</div>
 		</div>
-		<div class="vertical-bar" id="corpora_bar" style="display:none"></div>
+		<!--div class="sidebar-button-container" id="sidebar-btn-wrapper" style="display:none">
+			<button class="button-no-border" id="sidebar-btn" title="Toggle on/off textual search results"><i class="my-icons material-icons large-icon">view_list</i></button>
+		</div-->
+		<div class="sidebar-button-container" id="sidebar-btn-wrapper" style="display:none">
+			<div id="nav-icon3" title="Toggle on/off textual search results">
+				<span></span>
+			  <span></span>
+			  <span></span>
+			  <span></span>
+			</div>
+	  </div>
+		<div class="left-vertical-bar" id="corpora_bar" style="display:none"></div>
+		<div class="right-vertical-bar" id="moment_slider" style="display:none">
+			<div id="result-list" class="listview-container">
+				<ul class="list-wrapper">
+					<h2>This is a window for search results, try to search something first...</h2>
+				</ul>
+			</div>
+		</div>
 		<div id="video-div" class="dialog-wrapper half-page-dialog" style="display:none">
 			<div id="drag-icon-wrapper">
 				<i title="This is a draggable window." class="material-icons" id="video-drag-icon">drag_indicator</i>
@@ -79,10 +93,9 @@
 				<input type="text" title="Set start point with global ID" placeholder="StartId" id="video_startId" name="input_start">
 				<input type="text" title="Set stop point with global ID" placeholder="StopId" id="video_stopId" name="input_stop">
 				<div id="player_controls">
-					<button type="submit" title="jump back to the last moment" class="control-button" id="fastrwd-btn" onclick="onPlay(this.id)"><i class="material-icons" id="fastRwd">skip_previous</i></button><!--fast_rewind-->
+					<button type="submit" title="jump back to the last moment" class="control-button" id="fastrwd-btn" onclick="onPlay(this.id)"><i class="material-icons" id="fastRwd">skip_previous</i></button>
 					<button type="submit" title="play|pause the video" class="control-button" id="playpause-btn" onclick="onPlay(this.id)"><i class="material-icons" id="playpause">play_circle_outline</i></button>
-					<!--button type="submit" class="control-button" id="pause-btn" onclick="onPlay(this.id)"><i class="material-icons" id="pause" style="display:none">pause_circle_outline</i></button-->
-					<button type="submit" title="jump to the next moment" class="control-button" id="fastfwd-btn" onclick="onPlay(this.id)"><i class="material-icons" id="fastFwd">skip_next</i></button> <!--fast_forward-->
+					<button type="submit" title="jump to the next moment" class="control-button" id="fastfwd-btn" onclick="onPlay(this.id)"><i class="material-icons" id="fastFwd">skip_next</i></button>
 					<button type="submit" title="replay from startId" class="control-button" id="replay-btn" onclick="onPlay(this.id)"><i class="material-icons" id="replay">replay</i></button>
 					<button type="submit" title="reset startId|stopId" class="control-button" id="loop-reset-btn" onclick="onPlay(this.id)"><i class="material-icons" id="loop">clear</i></button>
 				</div>
@@ -186,6 +199,7 @@
 		<script src="js/lib/tween.js"></script>
 		<script src="js/lib/OrbitControls.js"></script>
 		<script src="js/lib/Projector.js"></script>
+		<script src="js/backend.js"></script>
 		<script src="js/Globals.js"></script>
 		<script src="js/shaders/skybox_vs.js"></script>
 		<script src="js/shaders/skybox_fs.js"></script>
