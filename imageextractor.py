@@ -63,5 +63,6 @@ class ImageClassifier:
 
     def extract_labels(self, image, top=3):
         prediction = self.model.predict(image)
-        labels = decode_predictions(prediction, top=top)  # default top 3
-        return [label[1] for label in labels[0]]
+        labels = decode_predictions(prediction, top=20)  # default top 3
+        rst = [label[1] for label in labels[0] if label[2] >= 0.01] # only return results with confidence larger than 0.01
+        return rst[:3]
