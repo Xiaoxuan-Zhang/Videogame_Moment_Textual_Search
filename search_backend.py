@@ -16,11 +16,13 @@ class Server:
         self.embedding_dict = None
         self.embeddings = None
         self.num_corpora = 0
-        with open(os.path.join('./visualization/backend/datasource/', 'bookkeeper.json'), 'r') as f_menu:
-            self.bookkeeper = json.loads(f_menu.read())
+        self.bookkeeper = None
         return
 
     def load_game(self, game):
+        with open(os.path.join('./visualization/backend/datasource/', 'bookkeeper.json'), 'r') as f_menu:
+            self.bookkeeper = json.loads(f_menu.read())
+
         self.game = game.upper().replace(' ', '_')
         database_file = self.bookkeeper[self.game]['database']
         emb_dict_file = self.bookkeeper[self.game]['embedding_dict']
