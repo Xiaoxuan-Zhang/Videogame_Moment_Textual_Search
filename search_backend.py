@@ -23,7 +23,7 @@ class Server:
     def load_game(self, game):
         self.game = game.upper().replace(' ', '_')
         database_file = self.bookkeeper[self.game]['database']
-        emb_dict_file = self.bookkeeper[self.game]['embeddings']
+        emb_dict_file = self.bookkeeper[self.game]['embedding_dict']
         with open(database_file) as f_d, open(emb_dict_file) as f_e:
             self.database = json.loads(f_d.read())
             self.embedding_dict = json.loads(f_e.read())
@@ -32,9 +32,10 @@ class Server:
 
     def load_embeddings(self):
         if len(self.database.items()) > 0:
+            emb_folder = self.bookkeeper[self.game]['embedding_folder']
             img_folder = self.database['0']['screenshots']['image_folder'].replace('\\', '/')
             out_folder = os.path.dirname(os.path.dirname(img_folder))
-            emb_files = sorted(glob.glob(os.path.join(out_folder, '*/embeddings_ma5/*.npy')))
+            emb_files = sorted(glob.glob(os.path.join(out_folder, '*/' + emb_folder + '/*.npy')))
             print(emb_files)
             arr_ls = []
             for file in emb_files:

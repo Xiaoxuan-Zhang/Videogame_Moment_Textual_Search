@@ -25,11 +25,6 @@ function CameraManager() {
     }
   }
   this.jumpToTarget = function(targetObj){
-    // var cameraPos = targetObj.position.clone();
-    // var lookAtVector = new THREE.Vector3(0,0, -1);
-    // lookAtVector.applyQuaternion(camera.quaternion).normalize();
-    // lookAtVector.multiplyScalar(FLY_STOP_DISTANCE);
-    // cameraPos.sub(lookAtVector);
     camera.position.set(this.targetCameraPosition.x, this.targetCameraPosition.y, this.targetCameraPosition.z);
     controls.target = targetObj.position;
     camera.lookAt(targetObj.position);
@@ -128,7 +123,6 @@ function CameraManager() {
         // console.log('DEBUGGING: Flying Finished - ' + (performance.now() - startingTime)); startingTime = performance.now();
         self.jumpToTarget(targetObj);
         self.showTarget(targetObj);
-        //showLabelsInRange(DISTANCE_FOR_DETAILED_VIEW);
       });
       tween_rotate.chain(tween_forward);
   }

@@ -176,6 +176,6 @@ function cameraReady() {
     }
   }
 
-  let initPosition = new THREE.Vector3(0.0, 0.0, SPACE_SCALE * - 0.2);
+  let initPosition = new THREE.Vector3(camera.position.x, camera.position.y, SPACE_SCALE * - 0.2); 
   cameraManager.flyToPosition(initPosition);
 }

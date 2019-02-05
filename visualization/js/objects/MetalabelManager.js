@@ -1,11 +1,11 @@
 var MetalabelManager = function() {
   var self = this;
-  this.textbox_height = 14;
-  this.canvas_width = 256;
-  this.canvas_height = 512;
-  this.left_margin = 15;
-  this.image_width = this.canvas_width - 2 * this.left_margin;
-  this.image_height= 224 * this.image_width / this.canvas_width;
+  this.textbox_height = 30;
+  this.left_margin = 20;
+  this.image_width = 980;
+  this.image_height= 540;
+  this.canvas_width = this.image_width + 2 * this.left_margin;
+  this.canvas_height = this.image_height * 2.5;
   this.tmp_canvas = null;
   this.ctx = null;
   this.wrapper_margin = 1.3; // this will affect all margins
@@ -13,7 +13,6 @@ var MetalabelManager = function() {
   this.frame_bottom = this.canvas_height * 0.925;
   this.canvas_anchor = new THREE.Vector2(0.5,0.4);
   this.metalabelDictionary = {};
-
   this.resize = function(size) {
     var pos =  Math.ceil(Math.log2(nSize));  //(ceiling of log n with base 2)
     return Math.pow(2, pos);
