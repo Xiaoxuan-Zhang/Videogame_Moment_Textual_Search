@@ -1,34 +1,56 @@
+// used to indicate it's good to start loading
+g_loadingFinished = false;
+
 // g_actionCounter & g_expectedActions are global variables from Scene.js
-let percent = 0; // current percent displayed
-let newPercent = 0;
+currentPercent = 0; // current Percent displayed
+targetPercent = 0;
 // reference to the paragraph that indicates percentage
-let textElement = document.getElementById("percentage");
+loadingProgressElement = document.getElementById("percentage");
 
-function updatePercent() {
-    newPercent = ((g_actionCounter/g_expectedActions) * 100).toFixed(0);
+// ensure the g_expectedActions is up-to-date
+previousExpectedActions = 0;
+expectedActionsLocked = false;
+expectedActionsTimer = null;
 
-    console.log("checking status");
-    if(newPercent == percent) {
-        // after incrementing wait 3 seconds before checking status again
-        if(newPercent != 100) {
-            setTimeout(updatePercent, 3000);
-        }
-    }
-    else {
-        // something new is loaded so increment numbers smoothly
-        console.log("newPercent: " + newPercent);
-        let incrementPercent = window.setInterval(function() {
-            percent += 1;
-            console.log("incremented: " + percent);
-            textElement.innerHTML = percent + "%";
-
-            if(percent == newPercent) {
-                clearInterval(incrementPercent);
-                console.log("interval cleared");
-                setTimeout(updatePercent, 3000);
-            }
-        }, 50);
-    }
-}
-
-updatePercent();
+incrementPercent = window.setInterval(function() {
+	// only call updatePercent if g_expectedActions stays the same in 500ms
+	if (!expectedActionsLocked) {
+		if (previousExpectedActions != g_expectedActions) {
+			previousExpectedActions = g_expectedActions;
+			expectedActionsTimer = Date.now();
+		} else {
+			if (expectedActionsTimer != null && (Date.now() - expectedActionsTimer >= 500)) {
+				expectedActionsLocked = true;
+			}
+		}
+	} else {
+		// update target percentage
+		targetPercent = Math.floor((g_actionCounter / g_expectedActions) * 100);
+		
+		// loading speed perception and faster counting in case previously cached
+		if (targetPercent > 90) {
+			stepsNeeded = 2;
+		} else if (targetPercent > 60) {
+			stepsNeeded = 5;
+		} else {
+			stepsNeeded = 10;
+		}
+		
+		// calculate increment step
+		step = (targetPercent - currentPercent) / stepsNeeded;
+		if (step < 1) {
+			step = 1;
+		}
+		currentPercent += step;
+		if (currentPercent >= targetPercent) {
+			currentPercent = targetPercent;
+		}
+		loadingProgressElement.innerHTML = Math.round(currentPercent) + "%";
+		
+		// stop Interval call at 100%
+		if (targetPercent == Math.round(currentPercent) && targetPercent == 100) {
+			g_loadingFinished = true;
+			clearInterval(incrementPercent);
+		}
+	}
+}, 10);

@@ -136,24 +136,21 @@ function render() {
   renderer.render( scene, camera );
 }
 function loadingScene() {
-  if ((g_actionCounter == g_expectedActions) && (!isPageShown))
+  // g_loadingFinished from LoadingProgress.js
+  if (!isPageShown && g_loadingFinished) // && (g_actionCounter == g_expectedActions))
   {
-    // wait 7 seconds after everything is loaded before displaying
-    // main page so percentage will increment to 100.
-    setTimeout(function() {
-      addCorporaButtons();
-      addTimelineDivs();
-      presetTextbox();
-      //createTimeline();
-      bookmarkManager.init();
-      if (dataManager.jsonData.video != undefined)
-      {
-        videoManager.init(dataManager.jsonData.video.source, dataManager.jsonData.video.fps, dataManager.jsonData.video.total);
-      }
-      cameraReady();
-      showPage();
-      isPageShown = true;
-    }, 7000);
+    addCorporaButtons();
+    addTimelineDivs();
+    presetTextbox();
+    //createTimeline();
+    bookmarkManager.init();
+    if (dataManager.jsonData.video != undefined)
+    {
+      videoManager.init(dataManager.jsonData.video.source, dataManager.jsonData.video.fps, dataManager.jsonData.video.total);
+    }
+    cameraReady();
+    showPage();
+    isPageShown = true;
   }
 }
 function cameraReady() {
