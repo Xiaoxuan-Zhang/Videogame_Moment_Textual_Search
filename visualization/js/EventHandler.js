@@ -221,14 +221,20 @@ function onSearchInput(event) {
     onTextInput(input);
   }
 }
-function onMomentInput(input) {
+function onMomentInput(input, momentList=[]) {
   //Equivalent to clicking on a moment sprite
-  var momentId = Number(input);
   g_autoRotate = false;
+  var momentId = Number(input);
   resetVisibleLabels();
   resetSprites();
   g_currentTarget = momentId;
-  labelManager.showNearbyLabels(momentId, ADJACENT_MOMENTS, true);
+  if (momentList.length == 0)
+  {
+    labelManager.showNearbyLabels(momentId, ADJACENT_MOMENTS, true);
+  } else {
+    labelManager.showLabelsWithTarget(momentId, momentList, true);
+  }
+
   urlManager.updateURL(URLKeys.MOMENT, momentId);
   audioManager.playSound(audioManager.soundOnClick);//Sound for Clicking
   g_lastSelected.object = spriteManager.spriteDictionary[g_currentTarget].object;
@@ -286,15 +292,21 @@ function resizeTimeline(){
 }
 
 function onClickMomentResults(event) {
-  var img_id =  $(this).attr("id");
-  var corpus = "";
-  var moment_id = "";
-  if (img_id != undefined) {
-    var arr = img_id.split("#");
+  let imgId =  $(this).attr("id");
+  let corpus = "";
+  let momentId = "";
+  let momentList = []
+  for (let i = 0; i < server.results.length; i++){
+    corpus = server.results[i]["corpus"];
+    momentId = server.results[i]["moment_id"];
+    momentList.push(Number(spriteManager.spriteGroups[corpus].children[momentId].name));
+  }
+  if (imgId != undefined){
+    let arr = imgId.split("#");
     corpus = arr[0];
-    moment_id = arr[1];
-    var global_id = spriteManager.spriteGroups[corpus].children[moment_id].name;
-    onMomentInput(global_id);
+    momentId = arr[1];
+    let targetId = spriteManager.spriteGroups[corpus].children[momentId].name;
+    onMomentInput(targetId, momentList);
   }
 }
 

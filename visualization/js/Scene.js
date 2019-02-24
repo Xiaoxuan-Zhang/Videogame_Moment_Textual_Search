@@ -9,7 +9,7 @@ var g_isFlying = false;
 var g_currentTarget = null; // ID of current focused object
 var g_actionCounter = 0;
 var g_expectedActions = 0;
-var g_autoRotate = true;
+var g_autoRotate = false;
 var g_dialogVisible = false;
 ////////////////////Objects/////////////////////////////////////////////////////
 var animator = null;
@@ -137,7 +137,7 @@ function render() {
 }
 function loadingScene() {
   // g_loadingFinished from LoadingProgress.js
-  if (!isPageShown && g_loadingFinished) // && (g_actionCounter == g_expectedActions))
+  if (!isPageShown && g_loadingFinished)
   {
     addCorporaButtons();
     addTimelineDivs();
@@ -177,6 +177,6 @@ function cameraReady() {
     }
   }
 
-  let initPosition = new THREE.Vector3(camera.position.x, camera.position.y, SPACE_SCALE * - 0.2); 
+  let initPosition = new THREE.Vector3(camera.position.x, camera.position.y, SPACE_SCALE * - 0.2);
   cameraManager.flyToPosition(initPosition);
 }

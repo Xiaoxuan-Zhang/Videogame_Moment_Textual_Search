@@ -14,7 +14,7 @@ var Server = function () {
   		type: "POST",
   		data: input_data,
   		success: function(result){
-  		  console.log(result);
+  		  console.log("Results received.");
   		},
   		error: function(error) {
   		  console.log(error);
@@ -42,7 +42,7 @@ var Server = function () {
         $('#loader-ajax').hide();
       },
       success: function(result){
-        console.log(result);
+        console.log("Results received.");
         obj_rst = JSON.parse(result);
         self.results = obj_rst;
         showMomentSlider(obj_rst);

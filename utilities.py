@@ -1,5 +1,6 @@
 import math
 import numpy as np
+from random import shuffle
 
 """
 Utility functions
@@ -47,6 +48,21 @@ def sort_by_cosine_similarity(vector, pool):
     sim = [cosine_similarity(vector, x) for x in pool]
     return [(index, value) for (index, value) in sorted(enumerate(sim), key=lambda k: k[1], reverse=True)]
 
+
+def random_neighbours(vector, pool):
+    """
+        return vectors in random order
+        :param vector: the source vector
+        :param pool: an array of vectors to be sorted
+        :return: random vectors
+        """
+    vec_inc = list(range(len(pool)))
+    shuffle(vec_inc)
+    neighbours = []
+    for index in vec_inc:
+        sim = cosine_similarity(vector, pool[index])
+        neighbours.append((index, sim))
+    return neighbours
 
 def moving_average(data, window_size):
     """

@@ -19,9 +19,8 @@ var MetalabelManager = function() {
   }
   this.showNearbyLabels = function(targetId, adjcentMomentNumber, animation = false) {
     //startingTime = performance.now();
-
     g_currentTarget = targetId;
-    var totalNumber = Object.keys(spriteManager.spriteDictionary).length;
+    let totalNumber = Object.keys(spriteManager.spriteDictionary).length;
     var start = targetId - adjcentMomentNumber;
     var stop = targetId + adjcentMomentNumber;
     if (start < -1) {
@@ -30,19 +29,27 @@ var MetalabelManager = function() {
     if (stop >  totalNumber - 1) {
       stop = totalNumber - 1
     }
+    var momentList = [];
+    for (var i = start; i <= stop; i++) {
+        momentList.push(i);
+    }
+    this.showLabelsWithTarget(targetId, momentList, animation);
+  }
 
+  this.showLabelsWithTarget = function(targetId, momentList, animation = false) {
     //Step 1.  calculate distances from adjacent sprites to the camera position,
-    //        put those images which might block the target into invisible list
+    //        put those images that might be blocking the target into invisible list
     //Step 2. load the rest of the images in parallel
     //step 3. show images, move camera to target.
 
     //targetLabel will be put at the same position as the low-res sprite
     cameraManager.setTargetCameraPosition(spriteManager.spriteDictionary[targetId].object);
-
-    for (var n = 0; n < totalNumber; n++)
+    let totalNumber = Object.keys(spriteManager.spriteDictionary).length;
+    for (let n = 0; n < totalNumber; n++)
     {
-      var spriteId = Number(spriteManager.spriteDictionary[n].object.name);
-      if (spriteId < start || spriteId > stop)
+      let spriteId = Number(spriteManager.spriteDictionary[n].object.name);
+      //if (spriteId < start || spriteId > stop)
+      if (!momentList.includes(spriteId))
       {
         spriteManager.spriteDictionary[n].object.material.opacity = OPACITY_FOR_HIDING;
         this.removeLabelFromScene(spriteId);
@@ -62,7 +69,6 @@ var MetalabelManager = function() {
     //Show the target label
     spriteManager.spriteDictionary[targetId].object.material.opacity = OPACITY_FOR_HIDING;
     this.addLabelToScene(targetId, animation);
-
   }
 
   this.addLabelToScene = function(spriteId, isAnimated = false) {
