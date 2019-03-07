@@ -4,6 +4,8 @@ This project is an extension to [Videogame Moment Space](https://github.com/Xiao
 
 Dialogues are first sampled from closed captions downloaded along with YouTube videos. Image keywords are extracted from captured screenshots using pretrained models. All textual data is then embedded into a vector space using pretrained fastText model such that it is possible to find the closest neighbours given a target vector by calculating the cosine similarity. 
 
+To view the live demo, visit [here](https://videogamemomentspace.appspot.com/).
+
 ## 1. Getting Started
 To run this experiment, we need to get a bunch of libraries installed.
 Here is a list of prerequisites:
