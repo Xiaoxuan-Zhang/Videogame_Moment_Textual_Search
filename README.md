@@ -56,3 +56,10 @@ Run each notebook following the correct order denoted in the filename.
   issn={2307-387X},
   pages={135--146}
 }
+@article{Szegedy2016RethinkingTI,
+  title={Rethinking the Inception Architecture for Computer Vision},
+  author={Christian Szegedy and Vincent Vanhoucke and Sergey Ioffe and Jonathon Shlens and Zbigniew Wojna},
+  journal={2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year={2016},
+  pages={2818-2826}
+}
