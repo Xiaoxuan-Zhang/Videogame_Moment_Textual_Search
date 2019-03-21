@@ -32,6 +32,7 @@ In this folder, you will find the following notebooks along with some python fil
   * step3_vector_embeddings.ipynb<br>
   * step4_evaluation.ipynb<br>
   * step5_image_feature_extractor.ipynb<br>
+  * step6_extract_key_content.ipynb<br>
 
 Each notebook provides instructions about why-and-how. The other python files contain some classes and utility functions used in those notebooks.
 
