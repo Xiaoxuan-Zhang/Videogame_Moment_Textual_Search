@@ -314,20 +314,11 @@ function showMomentSlider(object) {
   $('.my-list-style img').on("click", onClickMomentResults);
 }
 
-function presetTextbox() {
-  let inquiries = [];
-  let game = dataManager.jsonData['game'];
-  if (game == "The Last Of Us") {
-    inquiries = ["horses", "animals", "weapons", "bow and arrow", "in the cars", "buildings", "windows and doors", "mountains and rivers", "fireflies", "clickers", "giraffe"];
-  } else if (game == "Life Is Strange 1") {
-    inquiries = ["butterfly bucket", "sunset at the beach", "storm tornado cliff", "storm lightening", "rewind", "mobilephones", "beacon", "camera", "Whales", "campus"];
-  }
-
+function presetTextbox(obj) {
   var list = document.getElementById('preset_inquiries');
-
-  inquiries.forEach(function(item){
-     var option = document.createElement('option');
-     option.value = item;
-     list.appendChild(option);
+  Object.keys(obj).forEach(function(key) {
+    var option = document.createElement('option');
+    option.value = key;
+    list.appendChild(option);
   });
 }

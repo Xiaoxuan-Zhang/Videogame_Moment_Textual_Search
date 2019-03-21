@@ -9,7 +9,7 @@ var g_isFlying = false;
 var g_currentTarget = null; // ID of current focused object
 var g_actionCounter = 0;
 var g_expectedActions = 0;
-var g_autoRotate = false;
+var g_autoRotate = true;
 var g_dialogVisible = false;
 ////////////////////Objects/////////////////////////////////////////////////////
 var animator = null;
@@ -126,9 +126,8 @@ function animate() {
   //Autorotate camera
   if (g_autoRotate)
   {
-    //controls.update();
-    camera.rotation.x += AUTO_ROTATE_SPEED * 90 * Math.PI / 180;
-    camera.rotation.z += AUTO_ROTATE_SPEED * 90 * Math.PI / 180;
+    camera.rotation.y += AUTO_ROTATE_SPEED * 90 * Math.PI / 180;
+    //camera.rotation.z += AUTO_ROTATE_SPEED * 90 * Math.PI / 180;
   }
   cameraControls.update();
 }
@@ -141,7 +140,7 @@ function loadingScene() {
   {
     addCorporaButtons();
     addTimelineDivs();
-    presetTextbox();
+    //presetTextbox();
     //createTimeline();
     bookmarkManager.init();
     if (dataManager.jsonData.video != undefined)

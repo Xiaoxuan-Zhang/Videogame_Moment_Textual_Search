@@ -64,14 +64,15 @@
 						} else {
 							dimension = 2;
 						}
-						location.href = "tsnemap.html#game=" + selected + ";dimension=" + dimension; //hardcoded
+						//location.href = "tsnemap.html#game=" + selected + ";dimension=" + dimension; //hardcoded
+						onEnter(selected, dimension);
 					};
 					document.getElementById("myDropdown").appendChild(p);
 				}
       });
 		}
-		function onEnter(){
-		  location.href = "tsnemap.html";
+		function onEnter(game, dimension){
+			location.href = "tsnemap.html#game=" + game + ";dimension=" + dimension; //hardcoded
 		}
 		/* When the user clicks on the button,
 		toggle between hiding and showing the dropdown content */

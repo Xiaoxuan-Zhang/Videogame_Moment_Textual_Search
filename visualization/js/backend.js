@@ -1,7 +1,7 @@
 var Server = function () {
   var self = this;
   this.game = "";
-  this.url = 'http://localhost:5000/';
+  this.url = SERVER_URL;
   this.results = undefined;
 
   this.loadGame = function(game) {
@@ -14,14 +14,14 @@ var Server = function () {
   		type: "POST",
   		data: input_data,
   		success: function(result){
-  		  console.log("Results received.");
+  		  console.log(result);
+        presetTextbox(result);
   		},
   		error: function(error) {
   		  console.log(error);
   		}
   	})
   }
-
   this.textualSearch = function(text) {
     let url = this.url + 'data';
     let input = {};

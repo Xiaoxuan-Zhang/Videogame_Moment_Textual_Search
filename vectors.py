@@ -9,7 +9,7 @@ import utilities as util
 
 class Vectors:
 
-    def __init__(self, filename):
+    def __init__(self, filename = ''):
         self.vector_file = filename
         self.embedding_dict = None
         self.stop_words = set(stopwords.words('english'))
@@ -17,26 +17,27 @@ class Vectors:
         return
 
     def load_word_vectors(self, mode='fasttext'):
-        if self.embedding_dict is None:
+        if self.embedding_dict is None and self.vector_file:
             if mode.lower() == 'fasttext':
                 print("loading fasttext vectors")
                 self.embedding_dict = fasttext.load_fasttext_format(self.vector_file).wv
             else:
                 print("loading word2vec vectors ")
                 self.embedding_dict = KeyedVectors.load_word2vec_format(self.vector_file)
-            ''' 
-            Note that Fasttext bin file is not compatible with word2vec format as it contains extra 
-            information for subwords that might be useful for dealing with out-of-vocabulary words. 
+            '''
+            Note that Fasttext bin file is not compatible with word2vec format as it contains extra
+            information for subwords that might be useful for dealing with out-of-vocabulary words.
 
             Another solution to load FastText .vec if out-of-vocabulary words are not a concern
             Step 1. load .vec file. .vec file contains texts info for all words pretrained
-            self.embedding_dict = KeyedVectors.load_word2vec_format(self.vector_file, binary=False) 
+            self.embedding_dict = KeyedVectors.load_word2vec_format(self.vector_file, binary=False)
             Step 2. Convert .vec file into word2vec .bin format
-            self.embedding_dict.save_word2vec_format(self.vector_file + ".bin", binary=True) 
-            Step 3. Load converted .bin file. 
+            self.embedding_dict.save_word2vec_format(self.vector_file + ".bin", binary=True)
+            Step 3. Load converted .bin file.
             self.embedding_dict = KeyedVectors.load_word2vec_format(self.vector_file + ".bin", binary=True)
             '''
             self.vector_size = self.embedding_dict.vector_size
+
         return self.embedding_dict
 
     # For fasttext models only
