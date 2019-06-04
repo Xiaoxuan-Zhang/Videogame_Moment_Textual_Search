@@ -1,0 +1,12 @@
+{
+    "LIFE_IS_STRANGE_1": {
+        "database": "./visualization/backend/datasource/Life Is Strange 1/output/lifeisstrange_w_img_top3keywords.json",
+        "embedding_dict": "./visualization/backend/datasource/Life Is Strange 1/output/Life Is Strange_emb.json",
+        "embedding_folder": "embeddings_img_cap_ma5"
+    },
+    "THE_LAST_OF_US": {
+        "database": "./visualization/backend/datasource/The Last Of Us/output/The_Last_Of_Us_top3keywords.json",
+        "embedding_dict": "./visualization/backend/datasource/The Last Of Us/output/The_Last_Of_Us_emb.json",
+        "embedding_folder": "embeddings_img_cap_ma3"
+    }
+}
