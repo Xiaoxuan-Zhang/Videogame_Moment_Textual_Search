@@ -59,35 +59,30 @@ Run each notebook following the correct order denoted in the filename. To avoid 
 
 ## 5. Run Flask
 Flask is used to run the backend server of this application.
-* Make sure the fasttext pretrained model exists in the project and the path of this model is specified in main.py.
+* Make sure the fasttext pretrained model exists in the project and the path of this model is specified in main.py.<br>
   server = Server('./visualization/backend/fasttext/wiki.en.bin')
-* Modify bookkeeper.json following this example:
-  {
-    "LIFE_IS_STRANGE_1": {
-        "database": "./visualization/backend/datasource/Life Is Strange 1/output/lifeisstrange_w_img_top3keywords.json",
-        "embedding_dict": "./visualization/backend/datasource/Life Is Strange 1/output/Life Is Strange_emb.json",
-        "embedding_folder": "embeddings_img_cap_ma5"
-    },
-    "THE_LAST_OF_US": {
-        "database": "./visualization/backend/datasource/The Last Of Us/output/The_Last_Of_Us_top3keywords.json",
-        "embedding_dict": "./visualization/backend/datasource/The Last Of Us/output/The_Last_Of_Us_emb.json",
-        "embedding_folder": "embeddings_img_cap_ma3"
-    }
-  }
-  database - the path to a game's database_file
-  embedding_dict - a dictionary of a game's embeddings (automatically generated in step3_vector_embeddings.ipynb with fixed naming convention: xxx_emb.json).
-  embedding_folder - specifies the folder of the expected embedding data.
+* Modify bookkeeper.json following this example:<br>
+  {<br>
+    "LIFE_IS_STRANGE_1": {<br>
+        "database": "./visualization/backend/datasource/Life Is Strange 1/output/lifeisstrange_w_img_top3keywords.json",<br>
+        "embedding_dict": "./visualization/backend/datasource/Life Is Strange 1/output/Life Is Strange_emb.json",<br>
+        "embedding_folder": "embeddings_img_cap_ma5"<br>
+    }<br>
+  }<br>
+  database - the path to a game's database_file<br>
+  embedding_dict - a dictionary of a game's embeddings (automatically generated in step3_vector_embeddings.ipynb with fixed naming convention: xxx_emb.json)<br>
+  embedding_folder - specifies the folder of the expected embedding data<br>
 
-* In the terminal, direct to the root path and type in the following:
-$ export FLASK_APP=main.py
-$ flask run
+* In the terminal, direct to the root path and type in the following:<br>
+$ export FLASK_APP=main.py<br>
+$ flask run<br>
 
 ## 6. Run application
-In the terminal, cd to folder "visualization", and then run python server:
-Python 2 SimpleHTTPServer:
-python -m SimpleHTTPServer 7777
-Python 3 http.server:
-python3 -m http.server 7777
+In the terminal, cd to folder "visualization", and then run a python local server:<br>
+Python 2 SimpleHTTPServer:<br>
+python -m SimpleHTTPServer 7777<br>
+Python 3 http.server:<br>
+python3 -m http.server 7777<br>
 
 
 ## Citations
