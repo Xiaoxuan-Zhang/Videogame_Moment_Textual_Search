@@ -20,8 +20,8 @@ from flask_cors import CORS
 from server import Server
 import os, json
 
-server = Server('./visualization/backend/fasttext/wiki.en.bin') # './visualization/backend/fasttext/wiki.en.bin'
-app = Flask(__name__)
+server = "" # Server('./visualization/backend/fasttext/wiki.en.bin') # './visualization/backend/fasttext/wiki.en.bin'
+app = Flask(__name__, template_folder='templates', static_folder='static')
 CORS(app)
 
 @app.route('/index.html')

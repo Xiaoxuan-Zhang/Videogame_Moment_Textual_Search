@@ -1,0 +1,10 @@
+{
+  "The Last Of Us": {
+    "3": "static/pic/The Last Of Us_3D.json",
+    "2": "static/pic/The Last Of Us_2D.json"
+  },
+  "Life Is Strange 1": {
+    "3": "static/pic/Life Is Strange 1_3D.json",
+    "2": "static/pic/Life Is Strange 1_2D.json"
+  }
+}
